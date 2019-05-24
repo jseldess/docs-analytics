@@ -202,16 +202,17 @@ def build_graph():
     # Dynamically size markers based on pageviews.
     size = list()
     for n in data['pageviews']:
-        if n < 1000:
-            size.append(10)
-        elif n < 2000:
-            size.append(20)
-        elif n < 3000:
-            size.append(30)
-        elif n < 4000:
-            size.append(40)
-        else:
-            size.append(50)
+        size.append(10*round(n/1000))
+        # if n < 1000:
+        #     size.append(10)
+        # elif n < 2000:
+        #     size.append(20)
+        # elif n < 3000:
+        #     size.append(30)
+        # elif n < 4000:
+        #     size.append(40)
+        # else:
+        #     size.append(50)
 
     # Add size markers to data source.
     data['size'] = size
