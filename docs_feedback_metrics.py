@@ -39,7 +39,9 @@ def get_no_votes(analytics):
             'reportRequests': [
                 {
                     'viewId': VIEW_ID,
-                    'dateRanges': [{'startDate': '60daysAgo', 'endDate': 'today'}],
+                    # 'dateRanges': [{'startDate': '30daysAgo', 'endDate': 'today'}], # Last 30 days
+                    'dateRanges': [{'startDate': '60daysAgo', 'endDate': 'today'}], # Last 60 days
+                    # 'dateRanges': [{'startDate': '90daysAgo', 'endDate': 'today'}], # Last 90 days
                     'metrics': [
                         {'expression': 'ga:totalEvents'}
                     ],
@@ -70,7 +72,9 @@ def get_yes_votes(analytics):
             'reportRequests': [
                 {
                     'viewId': VIEW_ID,
-                    'dateRanges': [{'startDate': '60daysAgo', 'endDate': 'today'}],
+                    # 'dateRanges': [{'startDate': '30daysAgo', 'endDate': 'today'}], # Last 30 days
+                    'dateRanges': [{'startDate': '60daysAgo', 'endDate': 'today'}], # Last 60 days
+                    # 'dateRanges': [{'startDate': '90daysAgo', 'endDate': 'today'}], # Last 90 days
                     'metrics': [
                         {'expression': 'ga:totalEvents'}
                     ],
@@ -103,7 +107,9 @@ def get_unique_pageviews(analytics):
             'reportRequests': [
                 {
                     'viewId': VIEW_ID,
-                    'dateRanges': [{'startDate': '60daysAgo', 'endDate': 'today'}],
+                    # 'dateRanges': [{'startDate': '30daysAgo', 'endDate': 'today'}], # Last 30 days
+                    'dateRanges': [{'startDate': '60daysAgo', 'endDate': 'today'}], # Last 60 days
+                    # 'dateRanges': [{'startDate': '90daysAgo', 'endDate': 'today'}], # Last 90 days
                     'metrics': [
                         {'expression': 'ga:uniquePageviews'},
                     ],
@@ -123,7 +129,6 @@ def get_unique_pageviews(analytics):
                             ]
                         }
                     ]
-
                 }
             ]
         }
@@ -203,16 +208,6 @@ def build_graph():
     size = list()
     for n in data['pageviews']:
         size.append(10*round(n/1000))
-        # if n < 1000:
-        #     size.append(10)
-        # elif n < 2000:
-        #     size.append(20)
-        # elif n < 3000:
-        #     size.append(30)
-        # elif n < 4000:
-        #     size.append(40)
-        # else:
-        #     size.append(50)
 
     # Add size markers to data source.
     data['size'] = size
@@ -227,7 +222,13 @@ def build_graph():
         ("Positive Votes", "$y"),
     ]
 
-    p = figure(plot_width=700, plot_height=700, tooltips=TOOLTIPS,
+    # Non-normalized axes:
+    # p = figure(plot_width=700, plot_height=700, tooltips=TOOLTIPS,
+    #            title="Hover to see page details")
+
+    # Normalized axes:
+    p = figure(plot_width=700, plot_height=700, x_range=(0, max(max(x), max(y)) + 1),
+               y_range=(0, max(max(x), max(y)) + 1), tooltips=TOOLTIPS,
                title="Hover to see page details")
 
     p.circle(x='x', fill_alpha=0.2, y=jitter('y', width=0.6), size='size', source=source)
